@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Management - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial        <!-- Edit Blog Form -->
+        <div class="form-container{% if not post %} hidden{% endif %}" id="editForm">
+            <div class="form-header">
+                <h2 class="form-title">
+                    <i class="fas fa-edit"></i>
+                    {% if post %}Edit Blog Post{% else %}Blog Management{% endif %}
+                </h2>
+                <button type="button" class="toggle-btn" onclick="toggleToNewForm()">
+                    <i class="fas fa-plus"></i>
+                    Add New Blog
+                </button>
+            </div>
+
+            {% if post %}
+            <form class="blog-form" id="editBlogForm" method="post" action="{% url 'editpost' post.id %}">
+            {% else %}
+            <form class="blog-form" id="editBlogForm" method="post" action="#" style="display: none;">
+            {% endif %}
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: #ff6b6b;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-item {
+            margin-left: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link i {
+            margin-right: 5px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff4757, #c44569);
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(45deg, #c44569, #ff4757);
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem;
+        }
+
+        /* Header Section */
+        .page-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-title i {
+            margin-right: 10px;
+            color: #667eea;
+        }
+
+        .toggle-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-btn i {
+            margin-right: 8px;
+        }
+
+        .toggle-btn:hover {
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Form Styles */
+        .blog-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        .form-input, .form-textarea {
+            padding: 15px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            font-family: inherit;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 200px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #7f8c8d, #95a5a6);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(149, 165, 166, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #2ed573, #00b894);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(45deg, #00b894, #2ed573);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 213, 115, 0.3);
+        }
+
+        /* Hidden form state */
+        .form-container.hidden {
+            display: none;
+        }
+
+        /* Character count */
+        .char-count {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            animation: slideInAlert 0.5s ease-out;
+        }
+
+        .alert-success {
+            background: linear-gradient(45deg, rgba(46, 213, 115, 0.1), rgba(0, 184, 148, 0.1));
+            border: 2px solid rgba(46, 213, 115, 0.3);
+            color: #00b894;
+        }
+
+        .alert-info {
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            color: #667eea;
+        }
+
+        .alert-danger {
+            background: linear-gradient(45deg, rgba(255, 71, 87, 0.1), rgba(255, 55, 66, 0.1));
+            border: 2px solid rgba(255, 71, 87, 0.3);
+            color: #ff4757;
+        }
+
+        .alert i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .form-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                padding: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .toggle-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Animation */
+        @keyframes slideInAlert {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-container {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="logo">
+                <i class="fas fa-blog"></i>
+                CodeVeda Blog
+            </a>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        Welcome, {{ user.username|title }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link btn-danger">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Blog Management</h1>
+            <p class="page-subtitle">Create and edit blog posts for your website</p>
+        </div>
+
+        <!-- Success/Info Messages -->
+        <div id="alertContainer">
+            {% if success_message %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    {{ success_message }}
+                </div>
+            {% endif %}
+            {% if error %}
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ error }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Edit Blog Form -->
+        <div class="form-container{% if not post %} hidden{% endif %}" id="editForm">
+            <div class="form-header">
+                <h2 class="form-title">
+                    <i class="fas fa-edit"></i>
+                    {% if post %}Edit Blog Post{% else %}Blog Management{% endif %}
+                </h2>
+                <button type="button" class="toggle-btn" onclick="toggleToNewForm()">
+                    <i class="fas fa-plus"></i>
+                    Add New Blog
+                </button>
+            </div>
+
+            {% if post %}
+            <form class="blog-form" id="editBlogForm" method="post" action="{% url 'editpost' post.id %}">
+            {% else %}
+            <form class="blog-form" id="editBlogForm" method="post" action="#" style="display: none;">
+            {% endif %}
+                {% csrf_token %}
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="blog_id" value="{% if post %}{{ post.id }}{% else %}1{% endif %}" id="editBlogId">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="editTitle">
+                            <i class="fas fa-heading"></i>
+                            Blog Title
+                        </label>
+                        <input type="text" 
+                               id="editTitle" 
+                               name="title" 
+                               class="form-input" 
+                               value="{% if post %}{{ post.title }}{% else %}Building Modern Web Applications with Django and React{% endif %}"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="editAuthor">
+                            <i class="fas fa-user-edit"></i>
+                            Author Name
+                        </label>
+                        <input type="text" 
+                               id="editAuthor" 
+                               name="author" 
+                               class="form-input" 
+                               value="{% if post %}{{ post.author.username|title }}{% else %}{{ user.username|title }}{% endif %}"
+                               readonly>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="editDate">
+                            <i class="fas fa-calendar-alt"></i>
+                            Publication Date
+                        </label>
+                        <input type="date" 
+                               id="editDate" 
+                               name="date" 
+                               class="form-input" 
+                               value="2025-07-18"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="editCategory">
+                            <i class="fas fa-tags"></i>
+                            Category
+                        </label>
+                        <select id="editCategory" name="category" class="form-input" required>
+                            <option value="web-development" selected>Web Development</option>
+                            <option value="python">Python</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="mobile">Mobile Development</option>
+                            <option value="design">Design</option>
+                            <option value="tutorial">Tutorial</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label" for="editContent">
+                        <i class="fas fa-align-left"></i>
+                        Blog Content
+                    </label>
+                    <textarea id="editContent" 
+                              name="content" 
+                              class="form-textarea" 
+                              placeholder="Write your blog content here..."
+                              required>{% if post %}{{ post.content }}{% else %}Learn how to create powerful, scalable web applications by combining Django's robust backend capabilities with React's dynamic frontend features. This comprehensive guide covers everything from project setup to deployment, including best practices for API design, state management, and performance optimization.
+
+In this detailed tutorial, we'll walk through:
+- Setting up a Django REST API backend
+- Creating a React frontend application
+- Implementing authentication and authorization
+- Managing state with Redux
+- Optimizing performance for production
+- Deploying your application to the cloud
+
+Whether you're a beginner or an experienced developer, this guide will help you build modern, professional web applications that scale.{% endif %}</textarea>
+                    <div class="char-count" id="editCharCount">0 characters</div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="resetEditForm()">
+                        <i class="fas fa-undo"></i>
+                        Reset Changes
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Add New Blog Form -->
+        <div class="form-container{% if post %} hidden{% endif %}" id="newForm">
+            <div class="form-header">
+                <h2 class="form-title">
+                    <i class="fas fa-plus"></i>
+                    Create New Blog Post
+                </h2>
+                {% if post %}
+                <button type="button" class="toggle-btn" onclick="toggleToEditForm()">
+                    <i class="fas fa-edit"></i>
+                    Back to Edit
+                </button>
+                {% endif %}
+            </div>
+
+            <form class="blog-form" id="newBlogForm" method="post" action="{% url 'addpost' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="newTitle">
+                            <i class="fas fa-heading"></i>
+                            Blog Title
+                        </label>
+                        <input type="text" 
+                               id="newTitle" 
+                               name="title" 
+                               class="form-input" 
+                               placeholder="Enter blog title..."
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="newAuthor">
+                            <i class="fas fa-user-edit"></i>
+                            Author Name
+                        </label>
+                        <input type="text" 
+                               id="newAuthor" 
+                               name="author" 
+                               class="form-input" 
+                               placeholder="Enter author name..."
+                               value="{{ user.username|title }}"
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="newDate">
+                            <i class="fas fa-calendar-alt"></i>
+                            Publication Date
+                        </label>
+                        <input type="date" 
+                               id="newDate" 
+                               name="date" 
+                               class="form-input" 
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="newCategory">
+                            <i class="fas fa-tags"></i>
+                            Category
+                        </label>
+                        <select id="newCategory" name="category" class="form-input" required>
+                            <option value="">Select a category...</option>
+                            <option value="web-development">Web Development</option>
+                            <option value="python">Python</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="mobile">Mobile Development</option>
+                            <option value="design">Design</option>
+                            <option value="tutorial">Tutorial</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label" for="newContent">
+                        <i class="fas fa-align-left"></i>
+                        Blog Content
+                    </label>
+                    <textarea id="newContent" 
+                              name="content" 
+                              class="form-textarea" 
+                              placeholder="Write your blog content here..."
+                              required></textarea>
+                    <div class="char-count" id="newCharCount">0 characters</div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="resetNewForm()">
+                        <i class="fas fa-trash"></i>
+                        Clear Form
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-plus"></i>
+                        Create Blog Post
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Set today's date as default for new blog
+        document.getElementById('newDate').value = new Date().toISOString().split('T')[0];
+
+        // Character count functionality
+        function updateCharCount(textareaId, countId) {
+            const textarea = document.getElementById(textareaId);
+            const countElement = document.getElementById(countId);
+            const count = textarea.value.length;
+            countElement.textContent = `${count} characters`;
+            
+            // Change color based on length
+            if (count > 1000) {
+                countElement.style.color = '#2ed573';
+            } else if (count > 500) {
+                countElement.style.color = '#ffa502';
+            } else {
+                countElement.style.color = '#666';
+            }
+        }
+
+        // Add event listeners for character counting
+        document.getElementById('editContent').addEventListener('input', function() {
+            updateCharCount('editContent', 'editCharCount');
+        });
+
+        document.getElementById('newContent').addEventListener('input', function() {
+            updateCharCount('newContent', 'newCharCount');
+        });
+
+        // Initialize character counts
+        updateCharCount('editContent', 'editCharCount');
+        updateCharCount('newContent', 'newCharCount');
+
+        // Form toggle functions
+        function toggleToNewForm() {
+            document.getElementById('editForm').classList.add('hidden');
+            document.getElementById('newForm').classList.remove('hidden');
+            showAlert('info', 'Switched to new blog creation mode', 'fas fa-info-circle');
+        }
+
+        function toggleToEditForm() {
+            document.getElementById('newForm').classList.add('hidden');
+            document.getElementById('editForm').classList.remove('hidden');
+            showAlert('info', 'Switched to edit mode', 'fas fa-info-circle');
+        }
+
+        // Reset functions
+        function resetEditForm() {
+            if (confirm('Are you sure you want to reset all changes? This will restore the original values.')) {
+                document.getElementById('editBlogForm').reset();
+                // Restore original values
+                document.getElementById('editTitle').value = 'Building Modern Web Applications with Django and React';
+                document.getElementById('editAuthor').value = 'Alex Johnson';
+                document.getElementById('editDate').value = '2025-07-18';
+                document.getElementById('editCategory').value = 'web-development';
+                document.getElementById('editContent').value = `Learn how to create powerful, scalable web applications by combining Django's robust backend capabilities with React's dynamic frontend features. This comprehensive guide covers everything from project setup to deployment, including best practices for API design, state management, and performance optimization.
+
+In this detailed tutorial, we'll walk through:
+- Setting up a Django REST API backend
+- Creating a React frontend application
+- Implementing authentication and authorization
+- Managing state with Redux
+- Optimizing performance for production
+- Deploying your application to the cloud
+
+Whether you're a beginner or an experienced developer, this guide will help you build modern, professional web applications that scale.`;
+                updateCharCount('editContent', 'editCharCount');
+                showAlert('success', 'Form has been reset to original values', 'fas fa-check-circle');
+            }
+        }
+
+        function resetNewForm() {
+            if (confirm('Are you sure you want to clear all fields? This action cannot be undone.')) {
+                document.getElementById('newBlogForm').reset();
+                document.getElementById('newDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('newAuthor').value = '{{ user.username|title }}';
+                updateCharCount('newContent', 'newCharCount');
+                showAlert('success', 'New blog form has been cleared', 'fas fa-check-circle');
+            }
+        }
+
+        // Alert function
+        function showAlert(type, message, icon) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <i class="${icon}"></i>
+                ${message}
+            `;
+            
+            alertContainer.appendChild(alert);
+            
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 4000);
+        }
+
+        // Form submission handlers - Let Django handle the forms
+        document.getElementById('editBlogForm').addEventListener('submit', function(e) {
+            // Allow form to submit to Django backend
+            showAlert('info', 'Saving blog post changes...', 'fas fa-spinner');
+        });
+
+        document.getElementById('newBlogForm').addEventListener('submit', function(e) {
+            // Allow form to submit to Django backend
+            showAlert('info', 'Creating new blog post...', 'fas fa-spinner');
+        });
+
+        // Auto-save functionality (optional)
+        let autoSaveTimer;
+        function setupAutoSave() {
+            const forms = ['editBlogForm', 'newBlogForm'];
+            forms.forEach(formId => {
+                const form = document.getElementById(formId);
+                const inputs = form.querySelectorAll('input, textarea, select');
+                
+                inputs.forEach(input => {
+                    input.addEventListener('input', () => {
+                        clearTimeout(autoSaveTimer);
+                        autoSaveTimer = setTimeout(() => {
+                            // Auto-save logic would go here
+                            console.log(`Auto-saving ${formId}...`);
+                        }, 5000); // Auto-save after 5 seconds of inactivity
+                    });
+                });
+            });
+        }
+
+        // Initialize auto-save
+        setupAutoSave();
+    </script>
+</body>
+</html>

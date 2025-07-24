@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeVeda Blog - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: #ff6b6b;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-item {
+            margin-left: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link i {
+            margin-right: 5px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff4757, #c44569);
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(45deg, #c44569, #ff4757);
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+        }
+
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Blog Section */
+        .blog-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #333;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+        }
+
+        .blog-image {
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .blog-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .blog-author i {
+            margin-right: 5px;
+            color: #667eea;
+        }
+
+        .blog-date {
+            display: flex;
+            align-items: center;
+        }
+
+        .blog-date i {
+            margin-right: 5px;
+            color: #667eea;
+        }
+
+        .blog-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .blog-excerpt {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .read-more i {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #764ba2;
+        }
+
+        .read-more:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Admin Controls */
+        .admin-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .admin-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .admin-btn i {
+            margin-right: 5px;
+        }
+
+        .edit-btn {
+            background: linear-gradient(45deg, #3742fa, #2f3542);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: linear-gradient(45deg, #2f3542, #3742fa);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(55, 66, 250, 0.3);
+        }
+
+        .delete-btn {
+            background: linear-gradient(45deg, #ff4757, #c44569);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(45deg, #c44569, #ff4757);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+        }
+
+        .featured-admin-controls {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 107, 107, 0.1);
+        }
+
+        /* Featured Post */
+        .featured-post {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.1);
+            margin-bottom: 3rem;
+            border: 2px solid rgba(255, 107, 107, 0.1);
+        }
+
+        .featured-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 1.5rem 1.5rem 0 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .featured-content {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-item {
+                margin: 0.5rem 0;
+            }
+
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .blog-card {
+                margin: 0 0.5rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .blog-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .blog-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .blog-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-blog"></i>
+                CodeVeda Blog
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a>
+                </li>
+                
+                <!-- Show when user is NOT logged in -->
+                {% if not user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'login' %}" class="nav-link btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login / Sign Up
+                    </a>
+                </li>
+                {% else %}
+                <!-- Show when user IS logged in -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        Welcome, {{ user.username|title }}
+                    </a>
+                </li>
+                
+                {% if user.is_staff %}
+                <li class="nav-item">
+                    <a href="{% url 'admin_view' %}" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        Admin
+                    </a>
+                </li>
+                {% endif %}
+                
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link btn-danger">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Welcome to CodeVeda Blog</h1>
+            <p>Discover the latest in web development, programming tutorials, and tech insights. Join our community of developers and stay updated with cutting-edge technologies.</p>
+        </section>
+
+        <!-- Featured Post -->
+        {% if posts %}
+        <article class="featured-post">
+            <div class="featured-badge">
+                <i class="fas fa-star"></i> Featured Post
+            </div>
+            <div class="featured-content">
+                <div class="blog-meta">
+                    <div class="blog-author">
+                        <i class="fas fa-user-edit"></i>
+                        {{ posts.0.author.username|title }}
+                    </div>
+                    <div class="blog-date">
+                        <i class="fas fa-calendar-alt"></i>
+                        {{ posts.0.created_at|date:"F j, Y" }}
+                    </div>
+                </div>
+                <h2 class="blog-title">{{ posts.0.title }}</h2>
+                <p class="blog-excerpt">
+                    {{ posts.0.content|truncatewords:30 }}
+                </p>
+                <a href="#" class="read-more">
+                    Read Full Article
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                
+                {% if user.is_staff %}
+                <div class="admin-controls featured-admin-controls">
+                    <a href="{% url 'editpost' posts.0.id %}" class="admin-btn edit-btn">
+                        <i class="fas fa-edit"></i>
+                        Edit Post
+                    </a>
+                    <button type="button" class="admin-btn delete-btn" onclick="confirmDelete({{ posts.0.id }})">
+                        <i class="fas fa-trash"></i>
+                        Delete Post
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </article>
+        {% endif %}
+
+        <!-- Blog Posts Section -->
+        <section class="blog-section">
+            <h2 class="section-title">Latest Posts</h2>
+            <div class="blog-grid">
+                {% if posts %}
+                    {% for post in posts %}
+                    <!-- Blog Post {{ forloop.counter }} -->
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <i class="fas fa-blog"></i>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <div class="blog-author">
+                                    <i class="fas fa-user-edit"></i>
+                                    {{ post.author.username|title }}
+                                </div>
+                                <div class="blog-date">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    {{ post.created_at|date:"F j, Y" }}
+                                </div>
+                            </div>
+                            <h3 class="blog-title">{{ post.title }}</h3>
+                            <p class="blog-excerpt">
+                                {{ post.content|truncatewords:20 }}
+                            </p>
+                            <a href="#" class="read-more">
+                                Read More
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            
+                            {% if user.is_staff %}
+                            <div class="admin-controls">
+                                <a href="{% url 'editpost' post.id %}" class="admin-btn edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                    Edit
+                                </a>
+                                <button type="button" class="admin-btn delete-btn" onclick="confirmDelete({{ post.id }})">
+                                    <i class="fas fa-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <!-- No posts message -->
+                    <div class="blog-card" style="grid-column: 1 / -1; text-align: center;">
+                        <div class="blog-content" style="padding: 3rem;">
+                            <h3 class="blog-title">No Blog Posts Yet</h3>
+                            <p class="blog-excerpt" style="margin-bottom: 2rem;">
+                                There are no blog posts to display at the moment. 
+                                {% if user.is_staff %}
+                                    <br>As an admin, you can create the first post!
+                                {% else %}
+                                    Check back later for new content!
+                                {% endif %}
+                            </p>
+                            {% if user.is_staff %}
+                            <a href="{% url 'admin_view' %}" class="read-more" style="display: inline-flex; padding: 0.75rem 1.5rem; background: linear-gradient(45deg, #667eea, #764ba2); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                                <i class="fas fa-plus" style="margin-right: 8px;"></i>
+                                Create First Post
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 CodeVeda Blog. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const toggleButton = document.querySelector('.mobile-menu-toggle i');
+            
+            navMenu.classList.toggle('active');
+            
+            if (navMenu.classList.contains('active')) {
+                toggleButton.classList.remove('fa-bars');
+                toggleButton.classList.add('fa-times');
+            } else {
+                toggleButton.classList.remove('fa-times');
+                toggleButton.classList.add('fa-bars');
+            }
+        }
+
+        // Delete confirmation function
+        function confirmDelete(postId) {
+            if (confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
+                // Create a form and submit it to the deletepost URL
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/deletepost/${postId}/`;
+                
+                // Add CSRF token
+                const csrfToken = document.createElement('input');
+                csrfToken.type = 'hidden';
+                csrfToken.name = 'csrfmiddlewaretoken';
+                csrfToken.value = '{{ csrf_token }}';
+                form.appendChild(csrfToken);
+                
+                // Submit the form
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const toggleButton = document.querySelector('.mobile-menu-toggle');
+            const navbar = document.querySelector('.navbar');
+            
+            if (!navbar.contains(event.target)) {
+                navMenu.classList.remove('active');
+                const icon = toggleButton.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'linear-gradient(45deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95))';
+                navbar.style.backdropFilter = 'blur(10px)';
+            } else {
+                navbar.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+                navbar.style.backdropFilter = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
